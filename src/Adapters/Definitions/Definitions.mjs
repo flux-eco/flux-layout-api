@@ -6,7 +6,8 @@ import ContentContainer from "../../../definitions/templates/content-container.m
 import Map from "../../../definitions/templates/map.mjs";
 import MapMarker from "../../../definitions/templates/map-marker.mjs";
 import MapLocation from "../../../definitions/templates/map-location.mjs";
-
+import Tabnav from "../../../definitions/templates/tabnav.mjs";
+import TabnavItem from "../../../definitions/templates/tabnav-item.mjs";
 
 export default class Definitions {
 
@@ -55,6 +56,10 @@ export default class Definitions {
         return new DOMParser().parseFromString(MapMarker, 'text/html').querySelector('template');
       case 'map-location-template':
         return new DOMParser().parseFromString(MapLocation, 'text/html').querySelector('template');
+      case 'tabnav-template':
+        return new DOMParser().parseFromString(Tabnav, 'text/html').querySelector('template');
+      case 'tabnav-item-template':
+        return new DOMParser().parseFromString(TabnavItem, 'text/html').querySelector('template');
     }
   }
 

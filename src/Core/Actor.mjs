@@ -34,7 +34,11 @@ export default class Actor {
   static async new(appName, publish, template) {
     const obj = new Actor(publish, template);
     await AppElement.initialize(appName);
-    await MapElement.initialize();
+
+    //todo
+    if(document.getElementById('flux-layout-leaflet-style')) {
+      await MapElement.initialize();
+    }
 
     const element = document.createElement(appName)
     element.id = appName;
@@ -206,8 +210,11 @@ export default class Actor {
 
             if (addOnClickEvent) {
 
-              const data = {};
-              data[slotItem.idType] = slotItem.id
+              let data = {};
+              if(slotItem.hasOwnProperty('onClick')) {
+                data = {onClick: slotItem.onClick}
+              }
+
 
               element.addEventListener("click", () => this.#publish(
                 elementContainerId + "/clicked", { data }

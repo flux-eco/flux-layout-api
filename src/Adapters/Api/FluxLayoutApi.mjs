@@ -41,6 +41,9 @@ export default class FluxLayoutApi {
     this.#definitions = await Definitions.new(definitionsBaseUrl)
   }
 
+  /**
+   * @return {void}
+   */
   async initActor() {
     this.#actor = await Actor.new(this.#applicationName, (name, payload) => {
         this.#publish(

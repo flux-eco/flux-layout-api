@@ -5,6 +5,7 @@ export default `
         <p><slot name='description' template-id='string-template' slot-value-type="key-value-item"></slot></p>
     </div>
 
+    <slot name="tabnav"></slot>
     <div class="Box">
         <div class="Box-header d-flex flex-items-center">
             <h3 class="Box-title overflow-hidden flex-auto">
