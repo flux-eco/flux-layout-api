@@ -299,13 +299,21 @@ export default class Actor {
               div.className = slotName;
 
               Object.entries(object).forEach(([propertyName, property]) => {
+
+                templateContent.children.forEach(([childId, child]) => {
+                  console.log(child);
+                });
+
                 const queryResult = templateContent.querySelectorAll('[name=' + propertyName + ']');
-                console.log(queryResult);
                 if(queryResult !== null) {
                   const element = queryResult.item(0);
-                  console.log(element);
-                  element.setAttribute('content', property.value);
-                  div.appendChild(element)
+                  if(element) {
+                    element.setAttribute('content', property.value);
+                    div.appendChild(element)
+                  } else {
+                    console.log(templateContent);
+                    console.log("not found " + propertyName);
+                  }
                 }
 
 

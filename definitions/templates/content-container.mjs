@@ -14,6 +14,7 @@ export default `
             <slot name='menu'></slot>
         </div>
         <slot name='content'></slot>
+        <slot name="items"  template-id='details-template' slot-value-type="object-list"></slot>
     </div>
 </div>
 </template>
