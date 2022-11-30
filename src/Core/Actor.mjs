@@ -1,8 +1,13 @@
 import {
   created, slotDataChanged
 } from './Behaviors.mjs';
-import MapElement from './Elements/MapElement.mjs';
-import AppElement from './Elements/AppElement.mjs';
+import MapElement from './CustomElements/MapElement.mjs';
+import AppElement from './CustomElements/AppElement.mjs';
+import ValueElement from './ValueElements/ValueElement.mjs';
+import ContentElement from './ValueElements/ContentElement.mjs';
+import DetailsElement from './ValueElements/DetailsElement.mjs';
+import TextElement from './ValueElements/TextElement.mjs';
+
 
 export default class Actor {
   /**
@@ -127,6 +132,12 @@ export default class Actor {
     console.log(parentId);
     const parentElement = await this.#shadowRoot.getElementById(parentId);
     const shadowRoot = parentElement.shadowRoot;
+
+    //todo
+    if(payload.hasOwnProperty('type') && payload.hasOwnProperty('name')) {
+        this[payload.name](shadowRoot, this.#template).change(parentId, await payload.value);
+        return;
+    }
 
     const data = payload;
 
@@ -334,6 +345,11 @@ export default class Actor {
       }
     }
   }
+
+  contentList(shadowRoot, templateLoader) {
+    return ContentElement.new(shadowRoot, templateLoader)
+  }
+
 
   /**
    * @param {SlotDataChanged} payload

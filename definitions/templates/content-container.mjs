@@ -13,8 +13,9 @@ export default `
             </h3>
             <slot name='menu'></slot>
         </div>
-        <slot name='content'></slot>
-        <slot name="items"  template-id='details-template' slot-value-type="object-list"></slot>
+        <slot name='content' template-id='content-template'></slot>
+        
+        <slot name='content-list' template-id='content-template'></slot>
     </div>
 </div>
 </template>

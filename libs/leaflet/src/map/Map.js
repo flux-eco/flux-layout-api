@@ -115,7 +115,7 @@ export var Map = Evented.extend({
 		// Controls how much the map's zoom level will change after a
 		// [`zoomIn()`](#map-zoomin), [`zoomOut()`](#map-zoomout), pressing `+`
 		// or `-` on the keyboard, or using the [zoom controls](#control-zoom).
-		// Values smaller than `1` (e.g. `0.5`) allow for greater granularity.
+		// ValueElements smaller than `1` (e.g. `0.5`) allow for greater granularity.
 		zoomDelta: 1,
 
 		// @option trackResize: Boolean = true
