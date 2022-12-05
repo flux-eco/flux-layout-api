@@ -1,0 +1,17 @@
+{
+  "menuItemListAttributes": {
+    "id": "flux-eco-layout-page-header-menu-users-items",
+    "parentId": "flux-eco-layout-page-header-menu-users",
+    "menuItemsAttributes":
+    [
+      {
+        "id": "userId/345345435",
+        "title": "User 1"
+      },
+      {
+        "id": "userId/34534543ddddd5",
+        "title": "User 3"
+      }
+    ]
+  }
+}

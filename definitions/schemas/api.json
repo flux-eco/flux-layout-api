@@ -1,0 +1,21 @@
+{
+  "$id": "https://github.com/flux-eco/layout/definitions/schemas/api.json",
+  "tasks": {
+    "createPage": { },
+    "createHeader": { },
+    "createMenu": { },
+    "changeMenuItemList": { },
+    "createContentContainer": {},
+    "createDetails": {},
+    "createText": {}
+  },
+  "$defs": {
+    "createPage": { },
+    "createHeader": {},
+    "createMenu": { },
+    "changeMenuItemList": { },
+    "createContentContainer": {},
+    "createDetails": {},
+    "createText": {}
+  }
+}

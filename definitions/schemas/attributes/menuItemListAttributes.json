@@ -1,0 +1,21 @@
+{
+  "name": "menuItemListAttributes",
+  "type": "object",
+  "required": [
+    "id","parentId","menuItemsAttributes"
+  ],
+  "properties": {
+    "parentId": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "menuItemsAttributes": {
+      "type": "array",
+      "items": {
+        "$ref": "menuItemAttributes.json#"
+      }
+    }
+  }
+}

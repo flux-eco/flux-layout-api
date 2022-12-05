@@ -1,0 +1,17 @@
+{
+  "menuItemListAttributes": {
+    "id": "flux-eco-layout-page-header-menu-courses-items",
+    "parentId": "flux-eco-layout-page-header-menu-courses",
+    "menuItemsAttributes":
+    [
+      {
+        "id": "refId/222",
+        "title": "Kurs 1"
+      },
+      {
+        "id": "refId/333",
+        "title": "Kurs 3"
+      }
+    ]
+  }
+}

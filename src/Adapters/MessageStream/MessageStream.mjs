@@ -44,11 +44,11 @@ export default class MessageStream {
   }
 
   /**
-   * @param {string} on
+   * @param {string} address
    * @param {function} callbackAction
    */
-  register(on, callbackAction) {
-    const channel = new BroadcastChannel(on);
+  register(address, callbackAction) {
+    const channel = new BroadcastChannel(address);
     channel.addEventListener('message', messageEvent => {
       callbackAction(messageEvent.data);
     })
@@ -58,7 +58,7 @@ export default class MessageStream {
       console.log('Actor');
       console.log('%c' + this.#actorName, this.#styleRegister);
       console.log('has registered a callbackFunction. He will react in future on messages send to:')
-      console.log('%c' + on, this.#styleRegister);
+      console.log('%c' + address, this.#styleRegister);
       console.groupEnd()
     }
   }

@@ -1,0 +1,16 @@
+{
+  "address": "flux/eco/layout/createMenu",
+  "name": "createMenu",
+  "type": "object",
+  "required": [
+    "menuAttributes"
+  ],
+  "properties": {
+    "menuAttributes": {
+        "$ref": "../attributes/menuAttributes.json#"
+    }
+  },
+  "publishes": {
+
+  }
+}

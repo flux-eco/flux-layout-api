@@ -1,0 +1,7 @@
+{
+  "menuAttributes": {
+    "id": "flux-eco-layout-page-header-menu-users",
+    "title": "Benutzer",
+    "parentId": "flux-eco-layout-page-header"
+  }
+}

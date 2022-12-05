@@ -1,0 +1,16 @@
+{
+  "address": "flux/eco/layout/createText",
+  "name": "createText",
+  "type": "object",
+  "required": [
+    "textAttributes"
+  ],
+  "properties": {
+    "textAttributes": {
+      "$ref": "../attributes/textAttributes.json#"
+    }
+  },
+  "publishes": {
+
+  }
+}

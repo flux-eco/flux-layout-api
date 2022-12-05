@@ -1,0 +1,21 @@
+{
+  "address": "flux/eco/layout/createHeader",
+  "name": "createHeader",
+  "type": "object",
+  "required": [
+    "headerAttributes"
+  ],
+  "properties": {
+    "headerAttributes": {
+      "parentId": {
+        "type": "string"
+      },
+      "id": {
+        "type": "string"
+      }
+    }
+  },
+  "publishes": {
+
+  }
+}

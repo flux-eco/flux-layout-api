@@ -1,0 +1,25 @@
+{
+  "address": "flux/eco/layout/publishContents",
+  "name": "publishContents",
+  "type": "object",
+  "required": [
+    "parentId",
+    "contents"
+  ],
+  "properties": {
+    "parentId": {
+      "type": "string"
+    },
+    "contents": {
+      "type": "object",
+      "properties": {
+        "menu": {
+          "$ref": "../values/menu.json#"
+        }
+      }
+    }
+  },
+  "publishes": {
+
+  }
+}

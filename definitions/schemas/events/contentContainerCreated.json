@@ -1,0 +1,13 @@
+{
+  "address": "flux/eco/layout/page/header/menu/courses/{$contentContainerAttributes.id}/contentContainerCreated",
+  "name": "contentContainerCreated",
+  "type": "object",
+  "required": [
+    "contentContainerAttributes"
+  ],
+  "properties": {
+    "contentContainerAttributes": {
+      "$ref": "../attributes/contentContainerAttributes.json#"
+    }
+  }
+}

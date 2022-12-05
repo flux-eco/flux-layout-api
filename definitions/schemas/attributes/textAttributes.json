@@ -1,0 +1,22 @@
+{
+  "name": "textAttributes",
+  "type": "object",
+  "required": [
+    "parentId","id","htmlTag","text"
+  ],
+  "properties": {
+    "parentId": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "htmlTag": {
+      "type": "string",
+      "enum": ["p","h1","h2","h3","h4","h5","h6","b","em"]
+    },
+    "text": {
+      "type": "string"
+    }
+  }
+}

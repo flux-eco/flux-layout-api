@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="./main.mjs" type="module"></script>
+    <title>exampleApp</title>
+    <link id="flux-layout-style" href="./../../definitions/css/stylesheet.css" rel="stylesheet"/>
+</head>
+
+<body>
+<button onclick="loadMainTemplate()">load main template</button>
+<button onclick="createHeader()">create header</button>
+<button onclick="createMenuCourses()">create menu courses</button>
+<button onclick="changeMenuCoursesItemList()">change course menu Items</button>
+<button onclick="createMenuUsers()">create menu users</button>
+<button onclick="changeMenuUsersItemList()">change users menu Items</button>
+<button onclick="createContentConainer()">create Content Container</button>
+<button onclick="createContentMenuPlaces()">create Content Menu Places</button>
+<button onclick="createDetailsRefId55()">create Details refid-55</button>
+<button onclick="createDetailsRefId55Text()">create Details refid-55 text</button>
+<button onclick="appendEncryptedText()">append some Encrypted text</button>
+<button onclick="decryptText()">decrypt the text</button>
+<script>
+
+
+  const loadMainTemplate = async function loadMainTemplate() {
+    const channel = new BroadcastChannel('flux/eco/layout/createPage');
+    const createPage = await fetch('./tasks/createPage.json');
+
+    channel.postMessage(
+      await createPage.json()
+    );
+  }
+
+  const createHeader = async function createHeader() {
+    const channel = new BroadcastChannel('flux/eco/layout/createHeader');
+    channel.postMessage({ headerAttributes: { id: "flux-eco-layout-page-header", parentId: "flux-eco-layout-page" } });
+  }
+
+  const createMenuCourses = async function createMenuCourses() {
+    const channel = new BroadcastChannel('flux/eco/layout/createMenu');
+    const createMenu = await fetch('./tasks/createMenuCourses.json');
+    channel.postMessage(
+      await createMenu.json()
+    );
+  }
+
+  const createMenuUsers = async function createMenuUsers() {
+    const channel = new BroadcastChannel('flux/eco/layout/createMenu');
+    const createMenu = await fetch('./tasks/createMenuUsers.json');
+    channel.postMessage(
+      await createMenu.json()
+    );
+  }
+
+  const changeMenuCoursesItemList = async function changeMenuCoursesItemList() {
+    const channel = new BroadcastChannel('flux/eco/layout/changeMenuItemList');
+    const changeMenuItemList = await fetch('./tasks/changeMenuCoursesItemList.json');
+
+    channel.postMessage(
+      await changeMenuItemList.json()
+    );
+  }
+
+  const changeMenuUsersItemList = async function changeMenuUsersItemList() {
+    const channel = new BroadcastChannel('flux/eco/layout/changeMenuItemList');
+    const changeMenuItemList = await fetch('./tasks/changeMenuUsersItemList.json');
+
+    channel.postMessage(
+      await changeMenuItemList.json()
+    );
+  }
+
+  const createContentConainer = async function createContentConainer() {
+    const channel = new BroadcastChannel('flux/eco/layout/createContentContainer');
+    const task = await fetch('./tasks/createContentContainer.json');
+    channel.postMessage(await task.json());
+  }
+
+
+  const createContentMenuPlaces = async function createContentMenuPlaces() {
+    const channel = new BroadcastChannel('flux/eco/layout/createMenu');
+    const task = await fetch('./tasks/createContentMenuPlaces.json');
+    channel.postMessage(await task.json());
+  }
+
+
+  const createDetailsRefId55 = async function createDetailsRefId55() {
+    const channel = new BroadcastChannel('flux/eco/layout/createDetails');
+    const task = await fetch('./tasks/createDetails55.json');
+    channel.postMessage(await task.json());
+  }
+
+
+  const createDetailsRefId55Text = async function createDetailsRefId55Text() {
+    const channel = new BroadcastChannel('flux/eco/layout/createText');
+    const task = await fetch('./tasks/createTextForDetails55.json');
+    channel.postMessage(await task.json());
+  }
+
+
+  const appendEncryptedText = async function appendEncryptedText() {
+
+    //normally from server side encryption
+    const Encrypt = (salt, text) => {
+      const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
+      const byteHex = (n) => ("0" + Number(n).toString(16)).substr(-2);
+      const applySaltToChar = (code) => textToChars(salt).reduce((a, b) => a ^ b, code);
+
+      return text.split("").map(textToChars).map(applySaltToChar).map(byteHex).join("");
+    };
+
+    const channel = new BroadcastChannel('flux/eco/layout/createText');
+    const task = await fetch('./tasks/appendEncryptedText.json');
+    const parsedTask = await task.json();
+
+    parsedTask.textAttributes.text = Encrypt('normallyTheTextWillBeEncryptedByTheServerThisIsASalt;-)',
+      parsedTask.textAttributes.text)
+
+    channel.postMessage(parsedTask);
+  }
+
+  const decryptText = async function decryptText() {
+    //repository based encryption - just to see the effect
+    const channel = new BroadcastChannel('flux/eco/layout/createText');
+    const task = await fetch('./tasks/appendEncryptedText.json');
+    const parsedTask = await task.json();
+    channel.postMessage(parsedTask);
+  }
+
+  const menuItemClickedChannel = new BroadcastChannel('flux/eco/layout/menu/items/clicked');
+  menuItemClickedChannel.addEventListener('message', messageEvent => {
+    const attributes = messageEvent.data;
+    reloadContentContainer(attributes)
+  });
+
+  const reloadContentContainer = async function reloadPage(attributes) {
+    /*await loadMainTemplate();
+    await createHeader();
+    await createMenuCourses();
+    await createMenuUsers();
+    await changeMenuCoursesItemList();
+    await changeMenuUsersItemList();*/
+
+    const channel = new BroadcastChannel('flux/eco/layout/createContentContainer');
+    const task =
+      {
+        "contentContainerAttributes": {
+          "parentId": "flux-eco-layout-page",
+          "id": "flux-eco-layout-page-content-container",
+          "title": attributes.title
+        }
+      }
+    channel.postMessage(task);
+  }
+
+</script>
+</body>
+
+</html>

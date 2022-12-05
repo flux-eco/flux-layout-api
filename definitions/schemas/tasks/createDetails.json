@@ -1,0 +1,24 @@
+{
+  "address": "flux/eco/layout/createDetails",
+  "name": "createDetails",
+  "type": "object",
+  "required": [
+    "detailsAttributes"
+  ],
+  "properties": {
+    "detailsAttributes": {
+      "parentId": {
+        "type": "string"
+      },
+      "id": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      }
+    }
+  },
+  "publishes": {
+
+  }
+}

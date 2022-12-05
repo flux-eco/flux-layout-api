@@ -1,0 +1,16 @@
+{
+  "address": "flux/eco/layout/createContentContainer",
+  "name": "createContentContainer",
+  "type": "object",
+  "required": [
+    "contentContainerAttributes"
+  ],
+  "properties": {
+    "contentContainerAttributes": {
+      "$ref": "../attributes/contentContainerAttributes.json#"
+    }
+  },
+  "publishes": {
+    "$ref": "../events/contentContainerCreated.json#"
+  }
+}
