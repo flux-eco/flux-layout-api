@@ -20,7 +20,7 @@ export default class TextElement {
    * @param {TextAttributes} attributes
    * @return {Promise<HTMLElement>}
    */
-  async createElement(attributes) {
+  async createElement(elementOutbounds, attributes) {
     const element = document.createElement(this.tag);
     element.id = attributes.id;
     element.slot = "content-item"; //todo
@@ -34,7 +34,7 @@ export default class TextElement {
    *
    * @return {Promise<void>}
    */
-  async initializeCustomElement(style, publish) {
+  async initializeCustomElement(elementOutbounds) {
 
     customElements.define(
       this.tag,
@@ -45,7 +45,7 @@ export default class TextElement {
         }
 
         async connectedCallback() {
-          this.shadowRoot.append(style.cloneNode(true));
+          this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
 
           const additionalStyle = document.createElement('style');
           additionalStyle.innerHTML = `
@@ -54,7 +54,7 @@ export default class TextElement {
             word-break: break-word;
           }
           `;
-          this.shadowRoot.append(additionalStyle.cloneNode(true));
+          this.shadowRoot.append(additionalelementOutbounds.primerStyleElement.cloneNode(true));
 
 
 
@@ -69,7 +69,7 @@ export default class TextElement {
 
 
           const address = this.id.replace(/-/g, '/')  + "/" + "textCreated";
-          publish(address, attributes)
+          elementOutbounds.publish(address, attributes)
         }
       });
   }

@@ -21,12 +21,14 @@ export default class RequestStreamElement {
      * @param {RequestStreamAttributes} attributes
      * @return {Promise<HTMLElement>}
      */
-    async createElement(attributes) {
+    async createElement(elementOutbounds, attributes) {
         const element = document.createElement(this.tag);
         element.id = attributes.id;
         element.slot = "content-item"; //todo
 
         for (let attribute in attributes) {
+      attribute = elementOutbounds.camelToDash(attribute)
+      attribute = elementOutbounds.camelToDash(attribute)
             element.setAttribute(attribute, attributes[attribute]);
         }
 
@@ -38,7 +40,7 @@ export default class RequestStreamElement {
      *
      * @return {Promise<void>}
      */
-    async initializeCustomElement(style, publish) {
+    async initializeCustomElement(elementOutbounds) {
 
 
         customElements.define(
@@ -78,7 +80,7 @@ export default class RequestStreamElement {
                 }
 
                 async connectedCallback() {
-                    this.shadowRoot.append(style.cloneNode(true));
+                    this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
                     const attributes = JSON.parse(this.getAttribute(RequestStreamAttributes.name));
                     const content = await RequestStreamTemplate.content.cloneNode(true);
                     content.querySelector('#title').innerText = await this.#getTitle();
@@ -92,12 +94,12 @@ export default class RequestStreamElement {
                     //}
 
                     const address = this.id.replace(/-/g, '/') + "/" + "requestStreamCreated";
-                    publish(address, attributes)
+                    elementOutbounds.publish(address, attributes)
                 }
 
                 async #appendProgress() {
                     console.log("ddddd");
-                    publish('flux/eco/layout/createProgress', {progressAttributes: {
+                    elementOutbounds.publish('flux/eco/layout/createProgress', {progressAttributes: {
                         id: this.id + "-progress",
                         parentId: this.id,
                         totalToHandle: await this.#getTotalToHandle()
@@ -113,7 +115,7 @@ export default class RequestStreamElement {
                             if (done) return;
 
                             handled = handled + 1;
-                            publish('flux/eco/layout/changeAttributes', {attributes: {
+                            elementOutbounds.publish('flux/eco/layout/changeAttributes', {attributes: {
                                     id: "flux-eco-layout-request-stream-user-import-progress",
                                     totalHandled: handled
                                 }});

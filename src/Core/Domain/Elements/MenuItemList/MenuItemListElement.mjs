@@ -23,7 +23,7 @@ export default class MenuItemListElement {
    * @param {MenuItemListAttributes} attributes
    * @return {Promise<HTMLElement>}
    */
-  async createElement(attributes) {
+  async createElement(elementOutbounds, attributes) {
       const element = document.createElement(this.tag);
       element.id = attributes.id
       element.setAttribute(MenuItemListAttributes.name, JSON.stringify(attributes));
@@ -35,7 +35,7 @@ export default class MenuItemListElement {
    *
    * @return {Promise<void>}
    */
-  async initializeCustomElement(style, publish) {
+  async initializeCustomElement(elementOutbounds) {
 
     const tag = this.tag;
 
@@ -49,7 +49,7 @@ export default class MenuItemListElement {
         }
 
         async connectedCallback() {
-          this.shadowRoot.append(style.cloneNode(true));
+          this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
 
           /**
            * @type {MenuItemListAttributes}
@@ -65,16 +65,16 @@ export default class MenuItemListElement {
               this.shadowRoot.appendChild(button);
 
               const address = this.id.replace(/-/g, '/') + "/" + "menuListCreated";
-              publish(address, attributes)
+              elementOutbounds.publish(address, attributes)
           });
         }
 
         onClick(attributes) {
           let address = this.id.replace(/-/g, '/') + "/" + attributes.id + "/" + "clicked";
-          publish(address, attributes)
+          elementOutbounds.publish(address, attributes)
 
           address = tag.replace(/-/g, '/') + "/" + "clicked";
-          publish(address, attributes)
+          elementOutbounds.publish(address, attributes)
         }
       });
   }

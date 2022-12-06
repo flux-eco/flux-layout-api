@@ -21,12 +21,14 @@ export default class ProgressElement {
      * @param {ProgressAttributes} attributes
      * @return {Promise<HTMLElement>}
      */
-    async createElement(attributes) {
+    async createElement(elementOutbounds, attributes) {
         const element = document.createElement(this.tag);
         element.id = attributes.id;
         element.slot = "progress"; //todo
 
         for (let attribute in attributes) {
+      attribute = elementOutbounds.camelToDash(attribute)
+      attribute = elementOutbounds.camelToDash(attribute)
             element.setAttribute(attribute, attributes[attribute]);
         }
         return element;
@@ -37,7 +39,7 @@ export default class ProgressElement {
      *
      * @return {Promise<void>}
      */
-    async initializeCustomElement(style, publish) {
+    async initializeCustomElement(elementOutbounds) {
 
         customElements.define(
             this.tag,
@@ -70,7 +72,7 @@ export default class ProgressElement {
 
 
                 async connectedCallback() {
-                    this.shadowRoot.append(style.cloneNode(true));
+                    this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
                     const attributes = JSON.parse(this.getAttribute(ProgressAttributes.name));
                     const content = await ProgressTemplate.content.cloneNode(true);
                     await this.shadowRoot.append(content)
@@ -78,7 +80,7 @@ export default class ProgressElement {
                     this.#applyTotalToHandleChanged();
 
                     const address = this.id.replace(/-/g, '/') + "/" + "progressCreated";
-                    publish(address, attributes)
+                    elementOutbounds.publish(address, attributes)
                 }
 
                 static get observedAttributes() {

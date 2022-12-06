@@ -22,7 +22,7 @@ export default class PageElement {
    * @param attributes
    * @return {Promise<*>}
    */
-  async createElement(attributes) {
+  async createElement(elementOutbounds, attributes) {
     const element = document.createElement(this.tag);
     element.id = attributes.id;
 
@@ -34,7 +34,7 @@ export default class PageElement {
    *
    * @return {Promise<void>}
    */
-  async initializeCustomElement(style, publish) {
+  async initializeCustomElement(elementOutbounds) {
 
     customElements.define(
       this.tag,
@@ -45,7 +45,7 @@ export default class PageElement {
         }
 
         async connectedCallback() {
-          this.shadowRoot.append(style.cloneNode(true));
+          this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
           /** @var {PageAttributes} attributes */
           const attributes = await JSON.parse(this.getAttribute(PageAttributes.name));
           const templateType = attributes.templateType
@@ -53,7 +53,7 @@ export default class PageElement {
 
 
           const address = this.id.replace(/-/g, '/') + "/" + "pageCreated";
-          publish(address, attributes)
+          elementOutbounds.publish(address, attributes)
         }
       });
   }

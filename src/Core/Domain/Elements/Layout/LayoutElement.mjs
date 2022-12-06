@@ -17,7 +17,7 @@ export default class LayoutElement {
   }
 
 
-  async createElement(attributes) {
+  async createElement(elementOutbounds, attributes) {
     const element = document.createElement(this.tag);
     element.id = attributes.id;
     element.setAttribute(LayoutAttributes.name, JSON.stringify(attributes));
@@ -28,7 +28,7 @@ export default class LayoutElement {
    *
    * @return {Promise<void>}
    */
-  async initializeCustomElement(style, publish) {
+  async initializeCustomElement(elementOutbounds) {
     customElements.define(
       this.tag,
       class extends HTMLElement {
@@ -38,11 +38,11 @@ export default class LayoutElement {
         }
 
         async connectedCallback() {
-          this.shadowRoot.append(style.cloneNode(true));
+          this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
           const attributes = JSON.parse(this.getAttribute(LayoutAttributes.name));
 
           const address = this.id.replace(/-/g, '/') + "/" + "layoutCreated";
-          publish(address, attributes)
+          elementOutbounds.publish(address, attributes)
         }
       });
   }

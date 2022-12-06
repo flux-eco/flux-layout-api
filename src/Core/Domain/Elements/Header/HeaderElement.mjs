@@ -21,7 +21,7 @@ export default class HeaderElement  {
    * @param {HeaderAttributes} attributes
    * @return {Promise<HTMLElement>}
    */
-  async createElement(attributes) {
+  async createElement(elementOutbounds, attributes) {
     const element = document.createElement(this.tag);
     element.id = attributes.id;
     element.slot = "top"; //todo
@@ -36,7 +36,7 @@ export default class HeaderElement  {
    *
    * @return {Promise<void>}
    */
-  async initializeCustomElement(style, publish) {
+  async initializeCustomElement(elementOutbounds) {
 
     customElements.define(
       this.tag,
@@ -47,12 +47,12 @@ export default class HeaderElement  {
         }
 
         async connectedCallback() {
-          this.shadowRoot.append(style.cloneNode(true));
+          this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
           const attributes = JSON.parse(this.getAttribute(HeaderAttributes.name));
           await this.shadowRoot.append(await HeaderTemplate.content.cloneNode(true))
 
           const address = this.id.replace(/-/g, '/') + "/headerCreated";
-          publish(address, attributes)
+          elementOutbounds.publish(address, attributes)
         }
       });
   }

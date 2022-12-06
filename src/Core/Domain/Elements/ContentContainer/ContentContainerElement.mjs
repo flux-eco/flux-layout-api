@@ -1,5 +1,6 @@
 import { ContentContainerTemplate } from './ContentContainerTemplate.mjs';
 import ContentContainerAttributes from './ContentContainerAttributes.mjs';
+import MapAttributes from '../Map/MapAttributes.mjs';
 
 export default class ContentContainerElement {
 
@@ -21,12 +22,18 @@ export default class ContentContainerElement {
    * @param {ContentContainerAttributes} attributes
    * @return {Promise<HTMLElement>}
    */
-  async createElement(attributes) {
+  async createElement(elementOutbounds, attributes) {
     const element = document.createElement(this.tag);
     element.id = attributes.id;
     element.slot = "middle"; //todo
 
-    element.setAttribute(ContentContainerAttributes.name, JSON.stringify(attributes));
+    for (let attribute in attributes) {
+      if(typeof attributes[attribute] === 'object') {
+        element.setAttribute(attribute, JSON.stringify(attributes[attribute]));
+        continue;
+      }
+      element.setAttribute(attribute,  attributes[attribute]);
+    }
     return element;
   }
 
@@ -35,7 +42,7 @@ export default class ContentContainerElement {
    *
    * @return {Promise<void>}
    */
-  async initializeCustomElement(style, publish) {
+  async initializeCustomElement(elementOutbounds) {
 
     customElements.define(
       this.tag,
@@ -45,16 +52,31 @@ export default class ContentContainerElement {
           this.attachShadow({ mode: 'open' })
         }
 
+        async #getAttributes() {
+          const attributes = [];
+          for (let attribute in ContentContainerAttributes.keys) {
+            attributes[attribute] = this.getAttribute(attribute);
+          }
+          return ContentContainerAttributes.new(attributes)
+        }
+
+        async #getParentId() {
+          return this.getAttribute(ContentContainerAttributes.keys.parentId);
+        }
+
+        async #getTitle() {
+          this.getAttribute(ContentContainerAttributes.keys.title);
+        }
+
         async connectedCallback() {
-          this.shadowRoot.append(style.cloneNode(true));
-          const attributes = JSON.parse(this.getAttribute(ContentContainerAttributes.name));
+          this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
           const content = await ContentContainerTemplate.content.cloneNode(true);
-          content.querySelector('#title').innerText = attributes.title;
+          content.querySelector('#title').innerText = await this.#getTitle();
           await this.shadowRoot.append(content)
 
 
           const address = this.id.replace(/-/g, '/') + "/" + "contentContainerCreated";
-          publish(address, attributes)
+          elementOutbounds.publish(address,  await this.#getAttributes())
         }
       });
   }

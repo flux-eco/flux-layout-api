@@ -1,37 +1,43 @@
+import ElementService from './Elements/ElementService.mjs';
+import ElementAttributesService from './Elements/ElementAttributesService.mjs';
+
 export default class Actor {
   /**
    * @var id
    */
   static id = "flux-eco-layout"
+
   /**
-   * @var {ElementsRepository}
+   * @var {ElementService}
    */
-  #elementsRepository;
+  #elementService;
   /**
-   * @var {AttributesRepository}
+   * @var {ElementAttributesService}
    */
-  #attributesRepository;
+  #elementAttributesService;
 
 
   /**
-   * @param {ElementsRepository} elementsRepository
-   * @param {AttributesRepository} attributesRepository
+   * @param {ElementService} elementService
+   * @param {ElementAttributesService} elementAttributesService
    */
-  constructor(elementsRepository, attributesRepository) {
-    this.#elementsRepository = elementsRepository;
-    this.#attributesRepository = attributesRepository;
+  constructor(elementService, elementAttributesService) {
+    this.#elementService = elementService;
+    this.#elementAttributesService = elementAttributesService;
   }
 
   /**
-   * @param {ElementsRepository} elementsRepository
-   * @param {AttributesRepository} attributesRepository
+   * @param {ElementOutbounds} elementOutbounds
    * @return Actor
    */
-  static async new(elementsRepository, attributesRepository) {
-    const obj = new this(elementsRepository, attributesRepository);
+  static async new(elementOutbounds) {
+    const elementService = await ElementService.new(elementOutbounds)
+    const elementAttributeService = await ElementAttributesService.new()
+
+    const obj = new this(elementService,elementAttributeService);
     document.body.append(
-      await elementsRepository.createLayoutElement(
-        await attributesRepository.createLayoutAttributes({ id: Actor.id })
+      await elementService.createLayoutElement(
+        await elementAttributeService.createLayoutAttributes({ id: Actor.id })
       )
     );
     return obj;
@@ -64,22 +70,22 @@ export default class Actor {
   }
 
   async createPage({ pageAttributes }) {
-    const attributes = await this.#attributesRepository.createPageAttributes(pageAttributes);
+    const attributes = await this.#elementAttributesService.createPageAttributes(pageAttributes);
     await this.#removeExistingElement(attributes.id);
 
     await this.#appendElement(
       attributes.parentId,
-      await this.#elementsRepository.createPageElement(attributes)
+      await this.#elementService.createPageElement(attributes)
     );
   }
 
   async createHeader({ headerAttributes }) {
-    const attributes = await this.#attributesRepository.createHeaderAttributes(headerAttributes);
+    const attributes = await this.#elementAttributesService.createHeaderAttributes(headerAttributes);
     await this.#removeExistingElement(attributes.id);
 
     await this.#appendElement(
       attributes.parentId,
-      await this.#elementsRepository.createHeaderElement(attributes)
+      await this.#elementService.createHeaderElement(attributes)
     );
   }
 
@@ -88,12 +94,12 @@ export default class Actor {
    * @return {Promise<void>}
    */
   async createButton({ buttonAttributes }) {
-    const attributes = await this.#attributesRepository.createButtonAttributes(buttonAttributes);
+    const attributes = await this.#elementAttributesService.createButtonAttributes(buttonAttributes);
     await this.#removeExistingElement(attributes.id);
 
     await this.#appendElement(
       attributes.parentId,
-      await this.#elementsRepository.createButtonElement(attributes)
+      await this.#elementService.createButtonElement(attributes)
     );
   }
 
@@ -102,12 +108,12 @@ export default class Actor {
    * @return {Promise<void>}
    */
   async createMenu({ menuAttributes }) {
-    const attributes = await this.#attributesRepository.createMenuAttributes(menuAttributes);
+    const attributes = await this.#elementAttributesService.createMenuAttributes(menuAttributes);
     await this.#removeExistingElement(attributes.id);
 
     await this.#appendElement(
       attributes.parentId,
-      await this.#elementsRepository.createMenuElement(attributes)
+      await this.#elementService.createMenuElement(attributes)
     );
   }
 
@@ -116,74 +122,70 @@ export default class Actor {
    * @return {Promise<void>}
    */
   async changeMenuItemList({ menuItemListAttributes }) {
-    const attributes = await this.#attributesRepository.createMenuItemListAttributes(
+    const attributes = await this.#elementAttributesService.createMenuItemListAttributes(
       menuItemListAttributes);
     await this.#removeExistingElement(attributes.id);
 
     await this.#appendElement(
       attributes.parentId,
-      await this.#elementsRepository.createMenuItemListElement(attributes)
+      await this.#elementService.createMenuItemListElement(attributes)
     );
   }
 
   async createContentContainer({ contentContainerAttributes }) {
-    const attributes = await this.#attributesRepository.createContentContainerAttributes(
+    const attributes = await this.#elementAttributesService.createContentContainerAttributes(
       contentContainerAttributes);
     await this.#removeExistingElement(attributes.id);
 
     await this.#appendElement(
       attributes.parentId,
-      await this.#elementsRepository.createContentContainerElement(attributes)
+      await this.#elementService.createContentContainerElement(attributes)
     );
   }
 
   async createDetails({ detailsAttributes }) {
-    const attributes = await this.#attributesRepository.createDetailsAttributes(detailsAttributes);
+    const attributes = await this.#elementAttributesService.createDetailsAttributes(detailsAttributes);
     await this.#removeExistingElement(attributes.id);
 
     await this.#appendElement(
       attributes.parentId,
-      await this.#elementsRepository.createDetailsElement(attributes)
+      await this.#elementService.createDetailsElement(attributes)
     );
   }
 
   async createText({ textAttributes }) {
-    const attributes = await this.#attributesRepository.createTextAttributes(textAttributes);
+    const attributes = await this.#elementAttributesService.createTextAttributes(textAttributes);
     await this.#removeExistingElement(attributes.id);
     await this.#appendElement(
       attributes.parentId,
-      await this.#elementsRepository.createTextElement(attributes)
+      await this.#elementService.createTextElement(attributes)
     );
   }
 
   async createProgress({ progressAttributes }) {
-    const attributes = await this.#attributesRepository.createProgressAttributes(progressAttributes);
+    const attributes = await this.#elementAttributesService.createProgressAttributes(progressAttributes);
     await this.#removeExistingElement(attributes.id);
     await this.#appendElement(
         attributes.parentId,
-        await this.#elementsRepository.createProgressElement(attributes)
+        await this.#elementService.createProgressElement(attributes)
     );
   }
 
   async createRequestStream({ requestStreamAttributes }) {
-    const attributes = await this.#attributesRepository.createRequestStreamAttributes(requestStreamAttributes);
+    const attributes = await this.#elementAttributesService.createRequestStreamAttributes(requestStreamAttributes);
     await this.#removeExistingElement(attributes.id);
     await this.#appendElement(
         attributes.parentId,
-        await this.#elementsRepository.createRequestStreamElement(attributes)
+        await this.#elementService.createRequestStreamElement(attributes)
     );
   }
 
-
-
-
-
   async createMap({ mapAttributes }) {
-    const attributes = await this.#attributesRepository.createMapAttributes(mapAttributes);
+    const attributes = await this.#elementAttributesService.createMapAttributes(mapAttributes);
     await this.#removeExistingElement(attributes.id);
     await this.#appendElement(
       attributes.parentId,
-      await this.#elementsRepository.createMapElement(attributes)
+      await this.#elementService.createMapElement(attributes)
     );
   }
 

@@ -23,7 +23,7 @@ export default class MenuElement {
    * @param {MenuAttributes} attributes
    * @return {Promise<HTMLElement>}
    */
-  async createElement(attributes) {
+  async createElement(elementOutbounds, attributes) {
       const element = document.createElement(this.tag);
       element.id = attributes.id
       element.slot = 'menu'; //todo
@@ -35,7 +35,7 @@ export default class MenuElement {
    *
    * @return {Promise<void>}
    */
-  async initializeCustomElement(style, publish) {
+  async initializeCustomElement(elementOutbounds) {
 
     customElements.define(
       this.tag,
@@ -46,7 +46,7 @@ export default class MenuElement {
         }
 
         async connectedCallback() {
-          this.shadowRoot.append(style.cloneNode(true));
+          this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
 
           /** @var {MenuAttributes} attributes */
           const attributes = JSON.parse(this.getAttribute(MenuAttributes.name));
@@ -55,7 +55,7 @@ export default class MenuElement {
           await this.shadowRoot.append(menu)
 
           const address = this.id.replace(/-/g, '/') + "/" + "menuCreated";
-          publish(address, attributes)
+          elementOutbounds.publish(address, attributes)
         }
       });
   }

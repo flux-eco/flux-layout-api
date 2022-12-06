@@ -1,4 +1,10 @@
 export default class ContentContainerAttributes {
+  static keys = {
+    parentId: "parentId",
+    id: "id",
+    title: "title",
+  }
+
   parentId;
   id;
   title;

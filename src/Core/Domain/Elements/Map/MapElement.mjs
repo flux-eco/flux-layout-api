@@ -22,13 +22,14 @@ export default class MapElement {
    * @param {MapAttributes} attributes
    * @return {Promise<HTMLElement>}
    */
-  async createElement(attributes) {
+  async createElement(elementOutbounds, attributes) {
     const element = document.createElement(this.tag);
     element.id = attributes.id;
     element.slot = "content-item";
 
     for (let attribute in attributes) {
-      if (attribute === 'mapMarkersAttributeList') {
+      attribute = elementOutbounds.camelToDash(attribute)
+      if (attribute === 'map-markers-attribute-list') {
         const asJson = JSON.stringify(attributes[attribute]);
         element.setAttribute(attribute, asJson);
         continue;
@@ -41,7 +42,7 @@ export default class MapElement {
   /**
    * @return {void}
    */
-  async initializeCustomElement(style, publish) {
+  async initializeCustomElement(elementOutbounds) {
     customElements.define(
       this.tag,
       class extends HTMLElement {
@@ -55,12 +56,12 @@ export default class MapElement {
         }
 
         async connectedCallback() {
-          this.shadowRoot.append(style.cloneNode(true));
+          this.shadowRoot.append(elementOutbounds.leafletStyleElement.cloneNode(true));
           await this.shadowRoot.append(await MapTemplate.content.cloneNode(true))
           await this.#createMap();
 
           const address = this.id.replace(/-/g, '/') + "/" + "mapCreated";
-          publish(address, await this.#getAttributes())
+          elementOutbounds.publish(address, await this.#getAttributes())
         }
 
         static get observedAttributes() {

@@ -1,18 +1,18 @@
-import HeaderAttributes from '../Domain/Elements/Header/HeaderAttributes.mjs';
-import MenuAttributes from '../Domain/Elements/Menu/MenuAttributes.mjs';
-import MenuItemListAttributes from '../Domain/Elements/MenuItemList/MenuItemListAttributes.mjs';
-import PageAttributes from '../Domain/Elements/Page/PageAttributes.mjs';
-import LayoutAttributes from '../Domain/Elements/Layout/LayoutAttributes.mjs';
-import ContentContainerAttributes from '../Domain/Elements/ContentContainer/ContentContainerAttributes.mjs';
-import DetailsAttributes from '../Domain/Elements/Details/DetailsAttributes.mjs';
-import TextAttributes from '../Domain/Elements/Text/TextAttributes.mjs';
-import MapAttributes from '../Domain/Elements/Map/MapAttributes.mjs';
-import MapMarkerAttributes from '../Domain/Elements/Map/MapMarkerAttributes.mjs';
-import ButtonAttributes from '../Domain/Elements/Button/ButtonAttributes.mjs';
-import RequestStreamAttributes from "../Domain/Elements/RequestStream/RequestStreamAttributes.mjs";
-import ProgressAttributes from "../Domain/Elements/Progress/ProgressAttributes.mjs";
+import HeaderAttributes from './Header/HeaderAttributes.mjs';
+import MenuAttributes from './Menu/MenuAttributes.mjs';
+import MenuItemListAttributes from './MenuItemList/MenuItemListAttributes.mjs';
+import PageAttributes from './Page/PageAttributes.mjs';
+import LayoutAttributes from './Layout/LayoutAttributes.mjs';
+import ContentContainerAttributes from './ContentContainer/ContentContainerAttributes.mjs';
+import DetailsAttributes from './Details/DetailsAttributes.mjs';
+import TextAttributes from './Text/TextAttributes.mjs';
+import MapAttributes from './Map/MapAttributes.mjs';
+import MapMarkerAttributes from './Map/MapMarkerAttributes.mjs';
+import ButtonAttributes from './Button/ButtonAttributes.mjs';
+import RequestStreamAttributes from "./RequestStream/RequestStreamAttributes.mjs";
+import ProgressAttributes from "./Progress/ProgressAttributes.mjs";
 
-export default class AttributesRepository {
+export default class ElementAttributesService {
 
   /**
    * @private
@@ -20,7 +20,7 @@ export default class AttributesRepository {
   constructor() { }
 
   /**
-   * @return {Promise<AttributesRepository>}
+   * @return {Promise<ElementAttributesService>}
    */
   static async new() {
     return new this();

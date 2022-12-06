@@ -21,13 +21,14 @@ export default class ButtonElement {
    * @param {ButtonAttributes} attributes
    * @return {Promise<HTMLElement>}
    */
-  async createElement(attributes) {
+  async createElement(elementOutbounds, attributes) {
 
     const element = document.createElement(this.tag);
     element.id = attributes.id
     element.slot = "content-item";
 
     for (let attribute in attributes) {
+      attribute = elementOutbounds.camelToDash(attribute)
       if (attribute === 'taskAttributes') {
         const asJson = JSON.stringify(attributes[attribute]);
         element.setAttribute(attribute, asJson);
@@ -40,10 +41,10 @@ export default class ButtonElement {
 
 
   /**
-   *
+   * @var {ElementOutbounds} elementOutbounds
    * @return {Promise<void>}
    */
-  async initializeCustomElement(style, publish) {
+  async initializeCustomElement(elementOutbounds) {
 
     customElements.define(
       this.tag,
@@ -74,7 +75,7 @@ export default class ButtonElement {
         }
 
         async connectedCallback() {
-          this.shadowRoot.append(style.cloneNode(true));
+          this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
 
           const content = await ButtonTemplate[await this.#getType()].content.cloneNode(true)
           const button = content.querySelector('button');
@@ -82,12 +83,12 @@ export default class ButtonElement {
           await this.shadowRoot.append(button)
 
           const address = this.id.replace(/-/g, '/') + "/" + "buttonCreated";
-          publish(address, this.#getAttributes())
+          elementOutbounds.publish(address, this.#getAttributes())
         }
 
-        onClick() {
+        async onClick() {
           console.log(this.#getTaskAttributes())
-          publish(this.#getTaskAddress(), this.#getTaskAttributes())
+          elementOutbounds.publish(await this.#getTaskAddress(), await this.#getTaskAttributes())
         }
       });
 
