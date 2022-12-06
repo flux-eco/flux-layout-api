@@ -49,8 +49,7 @@ export default class HeaderElement  {
         async connectedCallback() {
           this.shadowRoot.append(style.cloneNode(true));
           const attributes = JSON.parse(this.getAttribute(HeaderAttributes.name));
-          const templateContent = await HeaderTemplate.content.cloneNode(true);
-          await this.shadowRoot.append(templateContent)
+          await this.shadowRoot.append(await HeaderTemplate.content.cloneNode(true))
 
           const address = this.id.replace(/-/g, '/') + "/headerCreated";
           publish(address, attributes)

@@ -1,0 +1,25 @@
+{
+  "id": "flux-eco-layout-page-content-container-map",
+  "attributes": {
+    "mapMarkersAttributeList": [
+      {
+        "id": "40-50",
+        "title": "my second marker",
+        "latitude": "40",
+        "longitude": "50",
+        "link": "somelink/to/somewhere",
+        "text": "a second text",
+        "radius": 400
+      },
+      {
+        "id": "40.2-50.3",
+        "title": "my third marker",
+        "latitude": "40.2",
+        "longitude": "50.3",
+        "link": "somelink/to/somewhere",
+        "text": "a third text",
+        "radius": 400
+      }
+    ]
+  }
+}

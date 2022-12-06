@@ -1,18 +1,35 @@
-export default class MapAttributes  {
+export default class MapAttributes {
+
+  static keys = {
+    parentId: "parentId",
+    id: "id",
+    title: "title",
+    latitude: "latitude",
+    longitude: "longitude",
+    zoom: "zoom",
+    triggerLocate: "triggerLocate",
+    mapMarkersAttributeList: "mapmarkersattributelist",
+  }
+
   parentId;
   id;
   title;
   latitude;
   longitude;
   zoom;
+  triggerLocate;
+  /** @var array */
+  mapMarkersAttributeList
 
-  constructor(parentId, id, title, latitude, longitude, zoom) {
+  constructor(parentId, id, title, latitude, longitude, zoom, triggerLocate, mapMarkersAttributeList) {
     this.parentId = parentId;
     this.id = id;
     this.title = title;
     this.latitude = latitude;
     this.longitude = longitude;
     this.zoom = zoom;
+    this.triggerLocate = triggerLocate;
+    this.mapMarkersAttributeList = mapMarkersAttributeList;
   }
 
   /**
@@ -20,8 +37,24 @@ export default class MapAttributes  {
    * @param {object} schema
    * @return {MapAttributes}
    */
-  static new({ parentId, id, title, latitude, longitude, zoom}, schema = null) {
+  static new({
+               parentId,
+               id,
+               title,
+               latitude,
+               longitude,
+               zoom,
+               triggerLocate,
+               mapMarkersAttributeList = []
+             }, schema = null) {
     //todo validate with schema
-    return new this(parentId, id, title,  latitude, longitude, zoom)
+    return new this(parentId,
+      id,
+      title,
+      latitude,
+      longitude,
+      zoom,
+      triggerLocate,
+      mapMarkersAttributeList)
   }
 }

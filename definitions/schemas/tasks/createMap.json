@@ -1,0 +1,24 @@
+{
+  "address": "flux/eco/layout/createMap",
+  "name": "createMap",
+  "type": "object",
+  "required": [
+    "mapAttributes"
+  ],
+  "properties": {
+    "mapAttributes": {
+      "$ref": "../attributes/mapAttributes.json#",
+      "required": [
+        "parentId",
+        "id",
+        "title",
+        "latitude",
+        "longitude",
+        "zoom"
+      ]
+    }
+  },
+  "publishes": {
+
+  }
+}

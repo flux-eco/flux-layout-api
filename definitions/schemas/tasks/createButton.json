@@ -1,0 +1,24 @@
+{
+  "address": "flux/eco/layout/createButton",
+  "name": "createButton",
+  "type": "object",
+  "required": [
+    "buttonAttributes"
+  ],
+  "properties": {
+    "buttonAttributes": {
+        "$ref": "../attributes/buttonAttributes.json#"
+    },
+    "required": [
+      "parentId",
+      "id",
+      "title",
+      "type",
+      "taskAddress",
+      "taskAttributes"
+    ]
+  },
+  "publishes": {
+
+  }
+}

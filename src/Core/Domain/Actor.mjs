@@ -21,13 +21,14 @@ export default class Actor {
     this.#elementsRepository = elementsRepository;
     this.#attributesRepository = attributesRepository;
   }
+
   /**
    * @param {ElementsRepository} elementsRepository
    * @param {AttributesRepository} attributesRepository
    * @return Actor
    */
   static async new(elementsRepository, attributesRepository) {
-    const obj =  new this(elementsRepository, attributesRepository);
+    const obj = new this(elementsRepository, attributesRepository);
     document.body.append(
       await elementsRepository.createLayoutElement(
         await attributesRepository.createLayoutAttributes({ id: Actor.id })
@@ -86,6 +87,20 @@ export default class Actor {
    * @param values
    * @return {Promise<void>}
    */
+  async createButton({ buttonAttributes }) {
+    const attributes = await this.#attributesRepository.createButtonAttributes(buttonAttributes);
+    await this.#removeExistingElement(attributes.id);
+
+    await this.#appendElement(
+      attributes.parentId,
+      await this.#elementsRepository.createButtonElement(attributes)
+    );
+  }
+
+  /**
+   * @param values
+   * @return {Promise<void>}
+   */
   async createMenu({ menuAttributes }) {
     const attributes = await this.#attributesRepository.createMenuAttributes(menuAttributes);
     await this.#removeExistingElement(attributes.id);
@@ -112,7 +127,7 @@ export default class Actor {
   }
 
   async createContentContainer({ contentContainerAttributes }) {
-    const attributes = await  this.#attributesRepository.createContentContainerAttributes(
+    const attributes = await this.#attributesRepository.createContentContainerAttributes(
       contentContainerAttributes);
     await this.#removeExistingElement(attributes.id);
 
@@ -141,4 +156,26 @@ export default class Actor {
     );
   }
 
+  async createMap({ mapAttributes }) {
+    const attributes = await this.#attributesRepository.createMapAttributes(mapAttributes);
+    await this.#removeExistingElement(attributes.id);
+    await this.#appendElement(
+      attributes.parentId,
+      await this.#elementsRepository.createMapElement(attributes)
+    );
+  }
+
+  async changeAttributes({ id, attributes }) {
+    const mainShadow = await this.#getMainShadow();
+    const element = await mainShadow.querySelector('#' + id);
+    for (let attribute in attributes) {
+
+      const attributeValue = attributes[attribute];
+      if(typeof attributeValue === 'object') {
+        element.setAttribute(attribute, JSON.stringify(attributeValue));
+        continue;
+      }
+      element.setAttribute(attribute, attributeValue);
+    }
+  }
 }

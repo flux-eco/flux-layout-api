@@ -1,0 +1,15 @@
+{
+  "buttonAttributes": {
+    "parentId": "flux-eco-layout-page-content-container",
+    "id": "flux-eco-layout-page-content-container-locate-button",
+    "title": "Locate me",
+    "type": "primary",
+    "taskAddress": "flux/eco/layout/changeAttributes",
+    "taskAttributes": {
+      "id": "flux-eco-layout-page-content-container-map",
+      "attributes": {
+        "triggerLocate": true
+      }
+    }
+  }
+}

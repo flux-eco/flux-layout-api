@@ -20,6 +20,10 @@
 <button onclick="createDetailsRefId55Text()">create Details refid-55 text</button>
 <button onclick="appendEncryptedText()">append some Encrypted text</button>
 <button onclick="decryptText()">decrypt the text</button>
+<button onclick="createMap()">create map</button>
+<button onclick="changeMapCoordinates()">change coordinates</button>
+<button onclick="changeMapMarkers()">change markers</button>
+<button onclick="createLocateButton()">create Locate button</button>
 <script>
 
 
@@ -98,6 +102,29 @@
     channel.postMessage(await task.json());
   }
 
+  const createMap = async function createMap() {
+    const channel = new BroadcastChannel('flux/eco/layout/createMap');
+    const task = await fetch('./tasks/createMap.json');
+    channel.postMessage(await task.json());
+  }
+
+  const changeMapCoordinates = async function changeMapCoordinates() {
+    const channel = new BroadcastChannel('flux/eco/layout/changeAttributes');
+    const task = await fetch('./tasks/changeMapCoordinates.json');
+    channel.postMessage(await task.json());
+  }
+
+  const changeMapMarkers = async function changeMapMarkers() {
+    const channel = new BroadcastChannel('flux/eco/layout/changeAttributes');
+    const task = await fetch('./tasks/changeMapMarkers.json');
+    channel.postMessage(await task.json());
+  }
+
+  const createLocateButton = async function createLocateButton() {
+    const channel = new BroadcastChannel('flux/eco/layout/createButton');
+    const task = await fetch('./tasks/createLocateButton.json');
+    channel.postMessage(await task.json());
+  }
 
   const appendEncryptedText = async function appendEncryptedText() {
 

@@ -6,6 +6,6 @@ await FluxLayoutApi.new(
     true,
     window.location + "../../definitions",
     window.location + "../../definitions/css/stylesheet.css",
-    window.location + "../../libs/dist/leaflet.css",
+    "http://localhost:8080/Customizing/global/plugins/Services/Repository/RepositoryObject/Learnplaces/pwa/libs/layout/libs/leaflet/dist/leaflet.css",
   )
 );

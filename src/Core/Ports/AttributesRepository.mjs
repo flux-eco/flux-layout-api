@@ -7,6 +7,8 @@ import ContentContainerAttributes from '../Domain/Elements/ContentContainer/Cont
 import DetailsAttributes from '../Domain/Elements/Details/DetailsAttributes.mjs';
 import TextAttributes from '../Domain/Elements/Text/TextAttributes.mjs';
 import MapAttributes from '../Domain/Elements/Map/MapAttributes.mjs';
+import MapMarkerAttributes from '../Domain/Elements/Map/MapMarkerAttributes.mjs';
+import ButtonAttributes from '../Domain/Elements/Button/ButtonAttributes.mjs';
 
 export default class AttributesRepository {
 
@@ -33,7 +35,10 @@ export default class AttributesRepository {
 
   async createHeaderAttributes(attributes) {
     return HeaderAttributes.new(attributes);
+  }
 
+  async createButtonAttributes(attributes) {
+    return ButtonAttributes.new(attributes);
   }
 
   async createMenuAttributes(attributes) {

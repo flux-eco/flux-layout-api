@@ -1,0 +1,25 @@
+{
+  "name": "buttonAttributes",
+  "type": "object",
+  "properties": {
+    "parentId": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["primary", "outline", "danger", "link"]
+    },
+    "taskAddress": {
+      "type": "string"
+    },
+    "taskAttributes": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "address": "flux/eco/layout/changeAttributes",
+  "name": "changeAttributes",
+  "type": "object",
+  "required": [
+    "id",
+    "attributes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "attributes": {
+      "type": "object"
+    }
+  },
+  "publishes": {
+
+  }
+}

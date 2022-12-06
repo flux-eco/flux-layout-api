@@ -1,0 +1,21 @@
+{
+  "mapAttributes": {
+    "parentId": "flux-eco-layout-page-content-container",
+    "id": "flux-eco-layout-page-content-container-map",
+    "title": "map title",
+    "latitude": "40",
+    "longitude": "50",
+    "zoom": 16,
+    "mapMarkersAttributeList": [
+      {
+        "id": "41-51",
+        "title": "my first marker",
+        "latitude": "41",
+        "longitude": "51",
+        "link": "somelink/to/somewhere",
+        "text": "a text",
+        "radius": 400
+      }
+    ]
+  }
+}

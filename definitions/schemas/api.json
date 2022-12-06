@@ -7,7 +7,10 @@
     "changeMenuItemList": { },
     "createContentContainer": {},
     "createDetails": {},
-    "createText": {}
+    "createText": {},
+    "createMap": {},
+    "changeAttributes": {},
+    "createButton": {}
   },
   "$defs": {
     "createPage": { },
@@ -16,6 +19,9 @@
     "changeMenuItemList": { },
     "createContentContainer": {},
     "createDetails": {},
-    "createText": {}
+    "createText": {},
+    "createMap": {},
+    "changeAttributes": {},
+    "createButton": {}
   }
 }

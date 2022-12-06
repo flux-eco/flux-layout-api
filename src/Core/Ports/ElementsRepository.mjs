@@ -7,6 +7,7 @@ import ContentContainerElement from '../Domain/Elements/ContentContainer/Content
 import DetailsElement from '../Domain/Elements/Details/DetailsElement.mjs';
 import TextElement from '../Domain/Elements/Text/TextElement.mjs';
 import MapElement from '../Domain/Elements/Map/MapElement.mjs';
+import ButtonElement from '../Domain/Elements/Button/ButtonElement.mjs';
 
 export default class ElementsRepository {
 
@@ -84,6 +85,14 @@ export default class ElementsRepository {
     return await obj.createElement(attributes);
   }
 
+  async createButtonElement(attributes) {
+    const obj = await ButtonElement.new();
+    if (this.#isInitialized(obj.tag) === false) {
+      await obj.initializeCustomElement(await this.#getCssPrimerStyleElement(), this.#onPublish)
+    }
+    return await obj.createElement(attributes);
+  }
+
   async createMenuElement(attributes) {
     const obj = await MenuElement.new();
     if (this.#isInitialized(obj.tag) === false) {
@@ -127,7 +136,7 @@ export default class ElementsRepository {
   async createMapElement(attributes) {
     const obj = await MapElement.new();
     if (this.#isInitialized(obj.tag) === false) {
-      await obj.initializeCustomElement(await this.#getCssPrimerStyleElement(), this.#onPublish)
+      await obj.initializeCustomElement(await this.#getLeafletStyleElement(), this.#onPublish)
     }
     return await obj.createElement(attributes);
   }

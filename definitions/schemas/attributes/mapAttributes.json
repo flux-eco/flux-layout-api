@@ -1,0 +1,33 @@
+{
+  "name": "mapAttributes",
+  "type": "object",
+  "properties": {
+    "parentId": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "string"
+    },
+    "longitude": {
+      "type": "string"
+    },
+    "zoom": {
+      "type": "int"
+    },
+    "triggerLocate": {
+      "type": "boolean"
+    },
+    "mapMarkersAttributeList": {
+      "type": "array",
+      "items": {
+        "$ref": "mapMarkerAttributes.json#"
+      }
+    }
+  }
+}
