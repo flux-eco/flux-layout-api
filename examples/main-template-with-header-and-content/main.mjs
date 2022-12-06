@@ -10,6 +10,7 @@ await FluxLayoutApi.new(
   )
 );
 
+/*
 fetch('http://127.0.0.1:81').then(async res => {
     const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
     while (true) {
@@ -33,4 +34,4 @@ while (true) {
         }});
 
 
-}
+}*/

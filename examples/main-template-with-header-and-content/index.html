@@ -122,6 +122,11 @@
   }
 
   const createLocateButton = async function createLocateButton() {
+    await loadMainTemplate();
+    await createHeader();
+    await createContentConainer();
+    await createMap();
+
     const channel = new BroadcastChannel('flux/eco/layout/createButton');
     const task = await fetch('./tasks/createLocateButton.json');
     channel.postMessage(await task.json());
