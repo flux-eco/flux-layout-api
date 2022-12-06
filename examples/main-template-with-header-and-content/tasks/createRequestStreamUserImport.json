@@ -1,0 +1,10 @@
+{
+  "requestStreamAttributes": {
+    "parentId": "flux-eco-layout-page-content-container",
+    "id": "flux-eco-layout-request-stream-user-import",
+    "title": "Benutzerimport",
+    "showProgress": true,
+    "totalToHandle": 300,
+    "requestAddress": "http://127.0.0.1:81"
+  }
+}

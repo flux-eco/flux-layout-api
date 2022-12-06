@@ -9,6 +9,8 @@ import TextAttributes from '../Domain/Elements/Text/TextAttributes.mjs';
 import MapAttributes from '../Domain/Elements/Map/MapAttributes.mjs';
 import MapMarkerAttributes from '../Domain/Elements/Map/MapMarkerAttributes.mjs';
 import ButtonAttributes from '../Domain/Elements/Button/ButtonAttributes.mjs';
+import RequestStreamAttributes from "../Domain/Elements/RequestStream/RequestStreamAttributes.mjs";
+import ProgressAttributes from "../Domain/Elements/Progress/ProgressAttributes.mjs";
 
 export default class AttributesRepository {
 
@@ -61,6 +63,14 @@ export default class AttributesRepository {
 
   async createTextAttributes(attributes) {
     return TextAttributes.new(attributes);
+  }
+
+  async createProgressAttributes(attributes) {
+    return ProgressAttributes.new(attributes);
+  }
+
+  async createRequestStreamAttributes(attributes) {
+    return RequestStreamAttributes.new(attributes);
   }
 
   async createMapAttributes(attributes) {

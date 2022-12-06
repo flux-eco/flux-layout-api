@@ -1,0 +1,21 @@
+{
+  "name": "progressAttributes",
+  "type": "object",
+  "required": [
+    "parentId","id","totalToHandle","totalHandled"
+  ],
+  "properties": {
+    "parentId": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "totalToHandle": {
+      "type": "string"
+    },
+    "totalHandled": {
+      "type": "boolean"
+    }
+  }
+}

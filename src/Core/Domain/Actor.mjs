@@ -156,6 +156,28 @@ export default class Actor {
     );
   }
 
+  async createProgress({ progressAttributes }) {
+    const attributes = await this.#attributesRepository.createProgressAttributes(progressAttributes);
+    await this.#removeExistingElement(attributes.id);
+    await this.#appendElement(
+        attributes.parentId,
+        await this.#elementsRepository.createProgressElement(attributes)
+    );
+  }
+
+  async createRequestStream({ requestStreamAttributes }) {
+    const attributes = await this.#attributesRepository.createRequestStreamAttributes(requestStreamAttributes);
+    await this.#removeExistingElement(attributes.id);
+    await this.#appendElement(
+        attributes.parentId,
+        await this.#elementsRepository.createRequestStreamElement(attributes)
+    );
+  }
+
+
+
+
+
   async createMap({ mapAttributes }) {
     const attributes = await this.#attributesRepository.createMapAttributes(mapAttributes);
     await this.#removeExistingElement(attributes.id);

@@ -24,6 +24,7 @@
 <button onclick="changeMapCoordinates()">change coordinates</button>
 <button onclick="changeMapMarkers()">change markers</button>
 <button onclick="createLocateButton()">create Locate button</button>
+<button onclick="createRequestStreamUserImport()">create User Import</button>
 <script>
 
 
@@ -124,6 +125,12 @@
     const channel = new BroadcastChannel('flux/eco/layout/createButton');
     const task = await fetch('./tasks/createLocateButton.json');
     channel.postMessage(await task.json());
+  }
+
+  const createRequestStreamUserImport = async function createRequestStreamUserImport() {
+      const channel = new BroadcastChannel('flux/eco/layout/createRequestStream');
+      const task = await fetch('./tasks/createRequestStreamUserImport.json');
+      channel.postMessage(await task.json());
   }
 
   const appendEncryptedText = async function appendEncryptedText() {

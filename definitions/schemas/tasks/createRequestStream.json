@@ -1,0 +1,16 @@
+{
+  "address": "flux/eco/layout/createRequestStream",
+  "name": "createRequestStream",
+  "type": "object",
+  "required": [
+    "requestStreamAttributes"
+  ],
+  "properties": {
+    "requestStreamAttributes": {
+      "$ref": "../attributes/requestStreamAttributes.json#"
+    }
+  },
+  "publishes": {
+
+  }
+}

@@ -1,7 +1,6 @@
 import * as L from './../../../../../libs/leaflet/dist/leaflet-src.esm.js';
 import MapAttributes from './MapAttributes.mjs';
 import { MapTemplate } from './MapTemplate.mjs';
-import text from '../../../../../archive/templates/text.mjs';
 
 export default class MapElement {
 
@@ -116,34 +115,6 @@ export default class MapElement {
           console.log(name);
           if (this.#onChanged.hasOwnProperty(name) && this.#map !== null) {
             this.#onChanged[name](oldValue, newValue)
-          }
-        }
-
-        setMarker(map, markerGroup, coordinates, radius) {
-          L.circle([
-            coordinates.childNodes[0].getAttribute('content'),
-            coordinates.childNodes[1].getAttribute('content')
-          ], {
-            color: 'violet',
-            fillColor: '#f03',
-            fillOpacity: 0.5,
-            radius: radius
-          }).addTo(markerGroup).bindPopup(coordinates.childNodes[1].getAttribute('content'));
-          map.addLayer(markerGroup);
-        }
-
-        changeMapCoordinates(map, markerGroup, coordinates) {
-          map.setView([
-              coordinates.childNodes[0].getAttribute('content'),
-              coordinates.childNodes[1].getAttribute('content')
-            ],
-            coordinates.childNodes[3].getAttribute('content'));
-          //radius
-          if (coordinates.childNodes[2].getAttribute('content') > 0) {
-            this.setMarker(map,
-              markerGroup,
-              coordinates,
-              coordinates.childNodes[2].getAttribute('content'))
           }
         }
 

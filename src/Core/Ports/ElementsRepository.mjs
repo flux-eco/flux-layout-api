@@ -8,6 +8,8 @@ import DetailsElement from '../Domain/Elements/Details/DetailsElement.mjs';
 import TextElement from '../Domain/Elements/Text/TextElement.mjs';
 import MapElement from '../Domain/Elements/Map/MapElement.mjs';
 import ButtonElement from '../Domain/Elements/Button/ButtonElement.mjs';
+import RequestStreamElement from "../Domain/Elements/RequestStream/RequestStreamElement.mjs";
+import ProgressElement from "../Domain/Elements/Progress/ProgressElement.mjs";
 
 export default class ElementsRepository {
 
@@ -127,6 +129,22 @@ export default class ElementsRepository {
 
   async createTextElement(attributes) {
     const obj = await TextElement.new();
+    if (this.#isInitialized(obj.tag) === false) {
+      await obj.initializeCustomElement(await this.#getCssPrimerStyleElement(), this.#onPublish)
+    }
+    return await obj.createElement(attributes);
+  }
+
+  async createProgressElement(attributes) {
+    const obj = await ProgressElement.new();
+    if (this.#isInitialized(obj.tag) === false) {
+      await obj.initializeCustomElement(await this.#getCssPrimerStyleElement(), this.#onPublish)
+    }
+    return await obj.createElement(attributes);
+  }
+
+  async createRequestStreamElement(attributes) {
+    const obj = await RequestStreamElement.new();
     if (this.#isInitialized(obj.tag) === false) {
       await obj.initializeCustomElement(await this.#getCssPrimerStyleElement(), this.#onPublish)
     }

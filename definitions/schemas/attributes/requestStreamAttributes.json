@@ -1,0 +1,30 @@
+{
+  "name": "requestStreamAttributes",
+  "type": "object",
+  "required": [
+    "parentId","id","title","showProgress","totalToHandle","requestAddress"
+  ],
+  "properties": {
+    "parentId": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "showProgress": {
+      "type": "boolean"
+    },
+    "totalToHandle": {
+      "type": "integer"
+    },
+    "requestAddress": {
+      "type": "string"
+    },
+    "requestAttributes": {
+      "type": "object"
+    }
+  }
+}

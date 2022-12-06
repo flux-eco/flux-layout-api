@@ -1,0 +1,16 @@
+{
+  "address": "flux/eco/layout/createProgress",
+  "name": "createProgress",
+  "type": "object",
+  "required": [
+    "progressAttributes"
+  ],
+  "properties": {
+    "progressAttributes": {
+      "$ref": "../attributes/progressAttributes.json#"
+    }
+  },
+  "publishes": {
+
+  }
+}
