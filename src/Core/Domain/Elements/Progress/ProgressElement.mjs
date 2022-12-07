@@ -18,6 +18,7 @@ export default class ProgressElement {
 
 
     /**
+     *
      * @param {ProgressAttributes} attributes
      * @return {Promise<HTMLElement>}
      */
@@ -26,10 +27,9 @@ export default class ProgressElement {
         element.id = attributes.id;
         element.slot = "progress"; //todo
 
-        for (let attribute in attributes) {
-      attribute = elementOutbounds.camelToDash(attribute)
-      attribute = elementOutbounds.camelToDash(attribute)
-            element.setAttribute(attribute, attributes[attribute]);
+        for (let key in attributes) {
+            const attributeName = await elementOutbounds.camelToDash(key)
+            element.setAttribute(attributeName, attributes[key]);
         }
         return element;
     }
@@ -58,16 +58,16 @@ export default class ProgressElement {
                 }
 
                 async #getParentId() {
-                    return this.getAttribute(ProgressAttributes.keys.parentId);
+                    return this.getAttribute(await elementOutbounds.camelToDash(ProgressAttributes.keys.parentId));
                 }
 
 
                 async #getTotalHandled() {
-                    return this.getAttribute(ProgressAttributes.keys.totalHandled);
+                    return this.getAttribute(await elementOutbounds.camelToDash(ProgressAttributes.keys.totalHandled));
                 }
 
                 async #getTotalToHandle() {
-                    return this.getAttribute(ProgressAttributes.keys.totalToHandle);
+                    return this.getAttribute(await elementOutbounds.camelToDash(ProgressAttributes.keys.totalToHandle));
                 }
 
 
@@ -100,25 +100,27 @@ export default class ProgressElement {
                 }
 
                 async #onTotalToHandleChanged(oldValue, newValue) {
-                   this.#applyTotalToHandleChanged();
+                    this.#applyTotalToHandleChanged();
                 }
+
                 async #applyTotalToHandleChanged() {
-                    this.shadowRoot.querySelector('#totalToHandle').textContent = await this.#getTotalToHandle();
+                    this.shadowRoot.querySelector('#total-to-handle').textContent = await this.#getTotalToHandle();
                     await this.#changetTotalHandledInPercent();
                 }
 
                 async #onTotalHandledChanged(oldValue, newValue) {
                     await this.#applyTotalToHandledChanged()
                 }
+
                 async #applyTotalToHandledChanged() {
-                    this.shadowRoot.querySelector('#totalHandled').textContent = await this.#getTotalHandled();
+                    this.shadowRoot.querySelector('#total-handled').textContent = await this.#getTotalHandled();
                     await this.#changetTotalHandledInPercent();
                 }
 
 
                 async #changetTotalHandledInPercent() {
                     const percentage = 100 * (await this.#getTotalToHandle() / await this.#getTotalHandled());
-                    const inPercentElement =  await this.shadowRoot.querySelector('#totalHandledInPercent');
+                    const inPercentElement = await this.shadowRoot.querySelector('#total-handled-in-percent');
                     console.log(inPercentElement);
                     inPercentElement.setAttribute('style', 'width:' + percentage);
                 }

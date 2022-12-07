@@ -24,7 +24,7 @@
 <button onclick="changeMapCoordinates()">change coordinates</button>
 <button onclick="changeMapMarkers()">change markers</button>
 <button onclick="createLocateButton()">create Locate button</button>
-<button onclick="createRequestStreamUserImport()">create User Import</button>
+<button onclick="createRequestStreamUserImport()">request User Import</button>
 <script>
 
 
@@ -133,6 +133,10 @@
   }
 
   const createRequestStreamUserImport = async function createRequestStreamUserImport() {
+      await loadMainTemplate();
+      await createHeader();
+      await createContentConainer();
+
       const channel = new BroadcastChannel('flux/eco/layout/createRequestStream');
       const task = await fetch('./tasks/createRequestStreamUserImport.json');
       channel.postMessage(await task.json());

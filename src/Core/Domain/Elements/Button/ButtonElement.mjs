@@ -28,7 +28,7 @@ export default class ButtonElement {
     element.slot = "content-item";
 
     for (let attribute in attributes) {
-      attribute = elementOutbounds.camelToDash(attribute)
+      attribute = await elementOutbounds.camelToDash(attribute)
       if (attribute === 'taskAttributes') {
         const asJson = JSON.stringify(attributes[attribute]);
         element.setAttribute(attribute, asJson);

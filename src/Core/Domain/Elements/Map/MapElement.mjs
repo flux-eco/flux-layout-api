@@ -28,7 +28,7 @@ export default class MapElement {
     element.slot = "content-item";
 
     for (let attribute in attributes) {
-      attribute = elementOutbounds.camelToDash(attribute)
+      attribute = await elementOutbounds.camelToDash(attribute)
       if (attribute === 'map-markers-attribute-list') {
         const asJson = JSON.stringify(attributes[attribute]);
         element.setAttribute(attribute, asJson);

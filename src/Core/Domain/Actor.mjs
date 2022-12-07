@@ -8,6 +8,10 @@ export default class Actor {
   static id = "flux-eco-layout"
 
   /**
+   * @var {ElementOutbounds}
+   */
+  #elementOutbounds;
+  /**
    * @var {ElementService}
    */
   #elementService;
@@ -18,10 +22,12 @@ export default class Actor {
 
 
   /**
+   * @param {elementOutbounds} elementOutbounds
    * @param {ElementService} elementService
    * @param {ElementAttributesService} elementAttributesService
    */
-  constructor(elementService, elementAttributesService) {
+  constructor(elementOutbounds, elementService, elementAttributesService) {
+    this.#elementOutbounds = elementOutbounds;
     this.#elementService = elementService;
     this.#elementAttributesService = elementAttributesService;
   }
@@ -34,7 +40,7 @@ export default class Actor {
     const elementService = await ElementService.new(elementOutbounds)
     const elementAttributeService = await ElementAttributesService.new()
 
-    const obj = new this(elementService,elementAttributeService);
+    const obj = new this(elementOutbounds, elementService,elementAttributeService);
     document.body.append(
       await elementService.createLayoutElement(
         await elementAttributeService.createLayoutAttributes({ id: Actor.id })
@@ -189,17 +195,19 @@ export default class Actor {
     );
   }
 
-  async changeAttributes({ id, attributes }) {
+  async changeAttributes({ attributes }) {
     const mainShadow = await this.#getMainShadow();
-    const element = await mainShadow.querySelector('#' + id);
-    for (let attribute in attributes) {
+    const element = await mainShadow.querySelector('#' + attributes.id);
+    for (let key in attributes) {
+      const attributeName = await this.#elementOutbounds.camelToDash(key)
+      const attributeValue = attributes[key];
 
-      const attributeValue = attributes[attribute];
       if(typeof attributeValue === 'object') {
-        element.setAttribute(attribute, JSON.stringify(attributeValue));
+        element.setAttribute(attributeName, JSON.stringify(attributeValue));
         continue;
       }
-      element.setAttribute(attribute, attributeValue);
+
+      element.setAttribute(attributeName, attributes[key]);
     }
   }
 }

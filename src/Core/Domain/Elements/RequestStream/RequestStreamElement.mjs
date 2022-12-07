@@ -1,4 +1,5 @@
 import {RequestStreamTemplate} from './RequestStreamTemplate.mjs';
+import {RequestStreamMessageTemplate} from './RequestStreamMessageTemplate.mjs';
 import RequestStreamAttributes from './RequestStreamAttributes.mjs';
 
 export default class RequestStreamElement {
@@ -18,6 +19,7 @@ export default class RequestStreamElement {
 
 
     /**
+     * @param {ElementOutbounds} elementOutbounds
      * @param {RequestStreamAttributes} attributes
      * @return {Promise<HTMLElement>}
      */
@@ -26,10 +28,9 @@ export default class RequestStreamElement {
         element.id = attributes.id;
         element.slot = "content-item"; //todo
 
-        for (let attribute in attributes) {
-      attribute = elementOutbounds.camelToDash(attribute)
-      attribute = elementOutbounds.camelToDash(attribute)
-            element.setAttribute(attribute, attributes[attribute]);
+        for (let key in attributes) {
+            const attributeName = await elementOutbounds.camelToDash(key)
+            element.setAttribute(attributeName, attributes[key]);
         }
 
         return element;
@@ -60,23 +61,23 @@ export default class RequestStreamElement {
                 }
 
                 async #getParentId() {
-                    return this.getAttribute(RequestStreamAttributes.keys.parentId);
+                    return this.getAttribute(await elementOutbounds.camelToDash(RequestStreamAttributes.keys.parentId));
                 }
 
                 async #getTitle() {
-                    return this.getAttribute(RequestStreamAttributes.keys.title);
+                    return this.getAttribute(await elementOutbounds.camelToDash(RequestStreamAttributes.keys.title));
                 }
 
                 async #getTotalToHandle() {
-                    return this.getAttribute(RequestStreamAttributes.keys.totalToHandle);
+                    return this.getAttribute(await elementOutbounds.camelToDash(RequestStreamAttributes.keys.totalToHandle));
                 }
 
                 async #getShowProgress() {
-                    return this.getAttribute(RequestStreamAttributes.keys.showProgress);
+                    return this.getAttribute(await elementOutbounds.camelToDash(RequestStreamAttributes.keys.showProgress));
                 }
 
                 async #getRequestAddress() {
-                    return this.getAttribute(RequestStreamAttributes.keys.requestAddress);
+                    return this.getAttribute(await elementOutbounds.camelToDash(RequestStreamAttributes.keys.requestAddress));
                 }
 
                 async connectedCallback() {
@@ -88,13 +89,15 @@ export default class RequestStreamElement {
 
                     const showProgress = await this.#getShowProgress();
                     console.log(showProgress);
-                   // if (showProgress === true) {
+                    if (showProgress === true) {
                         console.log("ddd");
                         await this.#appendProgress();
-                    //}
+                    }
 
                     const address = this.id.replace(/-/g, '/') + "/" + "requestStreamCreated";
-                    elementOutbounds.publish(address, attributes)
+                    elementOutbounds.publish(address, attributes);
+
+                    this.handleRequest();
                 }
 
                 async #appendProgress() {
@@ -107,7 +110,11 @@ export default class RequestStreamElement {
                 }
 
                 async handleRequest() {
-                    fetch(this.#getRequestAddress()).then(async res => {
+
+                    const streamMessagesContainer = this.shadowRoot.querySelector('#stream-messages-container');
+
+
+                    fetch(await this.#getRequestAddress()).then(async res => {
                         const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
                         let handled = 0;
                         while (true) {
@@ -120,7 +127,10 @@ export default class RequestStreamElement {
                                     totalHandled: handled
                                 }});
 
-                            output.append(value);
+                            let streamMessage = RequestStreamMessageTemplate.content.cloneNode(true);
+                            console.log(value);
+                            streamMessage.append("");
+                            streamMessagesContainer.appendChild(streamMessage);
                         }
                     });
 
