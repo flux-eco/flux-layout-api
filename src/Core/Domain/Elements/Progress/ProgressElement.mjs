@@ -18,7 +18,7 @@ export default class ProgressElement {
 
 
     /**
-     *
+     * @param {ElementOutbounds} elementOutbounds
      * @param {ProgressAttributes} attributes
      * @return {Promise<HTMLElement>}
      */

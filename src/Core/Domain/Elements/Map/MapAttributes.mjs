@@ -8,7 +8,7 @@ export default class MapAttributes {
     longitude: "longitude",
     zoom: "zoom",
     triggerLocate: "triggerLocate",
-    mapMarkersAttributeList: "mapmarkersattributelist",
+    mapMarkersAttributeList: "mapMarkersAttributeList",
   }
 
   parentId;

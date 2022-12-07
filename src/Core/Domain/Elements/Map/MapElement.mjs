@@ -19,6 +19,7 @@ export default class MapElement {
   }
 
   /**
+   * @param {ElementOutbounds} elementOutbounds
    * @param {MapAttributes} attributes
    * @return {Promise<HTMLElement>}
    */
@@ -27,14 +28,14 @@ export default class MapElement {
     element.id = attributes.id;
     element.slot = "content-item";
 
-    for (let attribute in attributes) {
-      attribute = await elementOutbounds.camelToDash(attribute)
-      if (attribute === 'map-markers-attribute-list') {
-        const asJson = JSON.stringify(attributes[attribute]);
-        element.setAttribute(attribute, asJson);
+    for (let key in attributes) {
+      const attributeName = await elementOutbounds.camelToDash(key);
+      const attributeValue = attributes[key]
+      if (attributeName === 'map-markers-attribute-list') {
+        element.setAttribute(attributeName,  JSON.stringify(attributeValue));
         continue;
       }
-      element.setAttribute(attribute, attributes[attribute]);
+      element.setAttribute(attributeName, attributeValue);
     }
     return element;
   }
@@ -65,13 +66,21 @@ export default class MapElement {
         }
 
         static get observedAttributes() {
-          return Object.values(MapAttributes.keys);
+          return this.#getAttributeNames()
+        }
+
+        static #getAttributeNames() {
+          const attributeNames = [];
+          for (let key in MapAttributes.keys) {
+            attributeNames.push(elementOutbounds.camelToDash(key));
+          }
+          return attributeNames
         }
 
         async #getAttributes() {
           const attributes = [];
-          for (let attribute in MapAttributes.keys) {
-            attributes[attribute] = this.getAttribute(attribute);
+          for (let key in MapAttributes.keys) {
+            attributes[key] = this.getAttribute(await elementOutbounds.camelToDash(key));
           }
           return MapAttributes.new(attributes)
         }
@@ -79,46 +88,45 @@ export default class MapElement {
         //map = L.map('map', {doubleClickZoom: false}).locate({setView: true, maxZoom: 16});
 
         async #getParentId() {
-          return this.getAttribute(MapAttributes.keys.parentId);
+          return this.getAttribute(await elementOutbounds.camelToDash(MapAttributes.keys.parentId));
         }
 
         async #getTitle() {
-          this.getAttribute(MapAttributes.keys.title);
+          this.getAttribute(await elementOutbounds.camelToDash(MapAttributes.keys.title));
         }
 
         async #getLatitude() {
-          return this.getAttribute(MapAttributes.keys.latitude);
+          return this.getAttribute(await elementOutbounds.camelToDash(MapAttributes.keys.latitude));
         }
 
         async #getLongitude() {
-          return this.getAttribute(MapAttributes.keys.longitude);
+          return this.getAttribute(await elementOutbounds.camelToDash(MapAttributes.keys.longitude));
         }
 
         async #getZoom() {
-          return this.getAttribute(MapAttributes.keys.zoom);
+          return this.getAttribute(await elementOutbounds.camelToDash(MapAttributes.keys.zoom));
         }
 
         async #getMapMarkersAttributeList() {
-          return JSON.parse(this.getAttribute(MapAttributes.keys.mapMarkersAttributeList));
+          return JSON.parse(this.getAttribute(await elementOutbounds.camelToDash(MapAttributes.keys.mapMarkersAttributeList)));
         }
 
         #onChanged = {
           latitude: (oldValue, newValue) => this.#onLatitudeChanged(oldValue, newValue),
           longitude: (oldValue, newValue) => this.#onLongitudeChanged(oldValue, newValue),
           zoom: (oldValue, newValue) => this.#onZoomChanged(oldValue, newValue),
-          mapmarkersattributelist: (oldValue, newValue) => this.#onMapMarkersAttributeListChanged(
+          mapMarkersAttributeList: (oldValue, newValue) => this.#onMapMarkersAttributeListChanged(
             JSON.parse(oldValue),
             JSON.parse(newValue)
           ),
         };
 
         attributeChangedCallback(name, oldValue, newValue) {
-          console.log(name);
-          if (this.#onChanged.hasOwnProperty(name) && this.#map !== null) {
-            this.#onChanged[name](oldValue, newValue)
+          const attributeKey = elementOutbounds.dashToCamel(name);
+          if (this.#onChanged.hasOwnProperty(attributeKey) && this.#map !== null) {
+            this.#onChanged[attributeKey](oldValue, newValue)
           }
         }
-
 
         async #onLatitudeChanged(oldValue, newValue) {
           console.log(this.#map);
@@ -156,7 +164,6 @@ export default class MapElement {
         }
 
         async #applyMapMarkersAttributeListChanged(oldValue, newValue) {
-
           const removedMarkers = this.#getRemovedItems(oldValue, newValue);
           if (removedMarkers.length > 0) {
             removedMarkers.forEach(mapMarkerAttributes => this.#removeMarker(
@@ -252,6 +259,7 @@ export default class MapElement {
          * @return {Promise<void>}
          */
         async #removeMarker({ mapMarkerAttributes }) {
+          console.log(mapMarkerAttributes.id);
           const marker = this.#mapMarkers[mapMarkerAttributes.id];
           marker.remove({ id: mapMarkerAttributes.id });
         }

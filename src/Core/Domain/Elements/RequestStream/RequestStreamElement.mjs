@@ -54,8 +54,8 @@ export default class RequestStreamElement {
 
                 async #getAttributes() {
                     const attributes = [];
-                    for (let attribute in RequestStreamAttributes.keys) {
-                        attributes[attribute] = this.getAttribute(attribute);
+                    for (let key in RequestStreamAttributes.keys) {
+                        attributes[key] = this.getAttribute(elementOutbounds.camelToDash(key));
                     }
                     return RequestStreamAttributes.new(attributes)
                 }

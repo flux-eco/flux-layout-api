@@ -1,4 +1,5 @@
 import TextAttributes from './TextAttributes.mjs';
+import RequestStreamAttributes from '../RequestStream/RequestStreamAttributes.mjs';
 
 export default class TextElement {
 
@@ -17,6 +18,7 @@ export default class TextElement {
 
 
   /**
+   * @param {ElementOutbounds} elementOutbounds
    * @param {TextAttributes} attributes
    * @return {Promise<HTMLElement>}
    */
@@ -25,7 +27,10 @@ export default class TextElement {
     element.id = attributes.id;
     element.slot = "content-item"; //todo
 
-    element.setAttribute(TextAttributes.name, JSON.stringify(attributes));
+    for (let key in attributes) {
+      const attributeName = await elementOutbounds.camelToDash(key)
+      element.setAttribute(attributeName, attributes[key]);
+    }
     return element;
   }
 
@@ -44,6 +49,14 @@ export default class TextElement {
           this.attachShadow({ mode: 'open' })
         }
 
+        async #getAttributes() {
+          const attributes = [];
+          for (let key in RequestStreamAttributes.keys) {
+            attributes[key] = this.getAttribute(elementOutbounds.camelToDash(key));
+          }
+          return RequestStreamAttributes.new(attributes)
+        }
+
         async connectedCallback() {
           this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
 
@@ -54,22 +67,17 @@ export default class TextElement {
             word-break: break-word;
           }
           `;
-          this.shadowRoot.append(additionalelementOutbounds.primerStyleElement.cloneNode(true));
+          this.shadowRoot.append(elementOutbounds.primerStyleElement.cloneNode(true));
 
-
-
-          /** @var {TextAttributes} attributes */
-          const attributes = JSON.parse(this.getAttribute(TextAttributes.name));
-
-          const element = document.createElement(attributes.htmlTag);
+          const element = document.createElement(this.getAttribute(elementOutbounds.camelToDash(TextAttributes.keys.htmlTag)));
           element.setAttribute("class","breakWord");
-          element.textContent = attributes.text;
+          element.textContent = this.getAttribute(await elementOutbounds.camelToDash(TextAttributes.keys.text));
 
           await this.shadowRoot.append(element)
 
 
           const address = this.id.replace(/-/g, '/')  + "/" + "textCreated";
-          elementOutbounds.publish(address, attributes)
+          elementOutbounds.publish(address, await this.#getAttributes())
         }
       });
   }

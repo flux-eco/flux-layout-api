@@ -1,4 +1,12 @@
 export default class TextAttributes {
+
+  static keys = {
+    parentId: "parentId",
+    id: "id",
+    htmlTag: "htmlTag",
+    text: "text"
+  }
+
   parentId;
   id;
   htmlTag;

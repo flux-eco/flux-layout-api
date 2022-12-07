@@ -6,7 +6,7 @@ await FluxLayoutApi.new(
     true,
     window.location + "../../definitions",
     window.location + "../../definitions/css/stylesheet.css",
-    "../../libs/layout/libs/leaflet/dist/leaflet.css",
+    window.location + "../../libs/leaflet/dist/leaflet.css",
   )
 );
 

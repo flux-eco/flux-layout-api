@@ -38,14 +38,14 @@ export default class ElementOutbounds {
    * @param {string} str
    * @return {Promise<string>}
    */
-  async camelToDash(str) {
+  camelToDash(str) {
     if (str !== str.toLowerCase()) {
       str = str.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
     }
     return str;
   }
 
-  async dashToCamel(str){
+  dashToCamel(str){
     return str.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
   }
 

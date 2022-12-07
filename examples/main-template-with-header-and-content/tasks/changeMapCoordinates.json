@@ -1,6 +1,6 @@
 {
-  "id": "flux-eco-layout-page-content-container-map",
   "attributes": {
+    "id": "flux-eco-layout-page-content-container-map",
     "latitude": "60",
     "longitude": "35",
     "zoom": 16
