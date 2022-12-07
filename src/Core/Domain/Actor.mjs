@@ -206,7 +206,6 @@ export default class Actor {
         element.setAttribute(attributeName, JSON.stringify(attributeValue));
         continue;
       }
-
       element.setAttribute(attributeName, attributes[key]);
     }
   }

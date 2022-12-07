@@ -45,4 +45,8 @@ export default class ElementOutbounds {
     return str;
   }
 
+  async dashToCamel(str){
+    return str.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
+  }
+
 }

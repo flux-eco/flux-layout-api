@@ -83,8 +83,10 @@ export default class ProgressElement {
                     elementOutbounds.publish(address, attributes)
                 }
 
-                static get observedAttributes() {
-                    return Object.values(ProgressAttributes.keys);
+                static get  observedAttributes() {
+                    return [
+                        'total-handled'
+                    ]
                 }
 
                 #onChanged = {
@@ -93,18 +95,20 @@ export default class ProgressElement {
                 };
 
                 attributeChangedCallback(name, oldValue, newValue) {
-                    console.log(name);
-                    if (this.#onChanged.hasOwnProperty(name) && this.id !== null) {
-                        this.#onChanged[name](oldValue, newValue)
+                    console.log(name); //todo
+                    if (this.#onChanged.hasOwnProperty('totalToHandle') && this.id !== null) {
+                        this.#onChanged['totalToHandle'](oldValue, newValue)
                     }
                 }
 
                 async #onTotalToHandleChanged(oldValue, newValue) {
-                    this.#applyTotalToHandleChanged();
+                    await this.#applyTotalToHandleChanged();
                 }
 
                 async #applyTotalToHandleChanged() {
-                    this.shadowRoot.querySelector('#total-to-handle').textContent = await this.#getTotalToHandle();
+                    console.log('test');
+                    const totalToHandle = await this.shadowRoot.querySelector('#totalToHandle');
+                    totalToHandle.textContent = await this.#getTotalToHandle();
                     await this.#changetTotalHandledInPercent();
                 }
 
@@ -113,16 +117,19 @@ export default class ProgressElement {
                 }
 
                 async #applyTotalToHandledChanged() {
-                    this.shadowRoot.querySelector('#total-handled').textContent = await this.#getTotalHandled();
-                    await this.#changetTotalHandledInPercent();
+                    console.log("ddddd");
+                    const totalHanled = await this.shadowRoot.querySelector('#totalHandled');
+                    totalHanled.textContent = await this.#getTotalHandled();
+
+                    //await this.#changetTotalHandledInPercent();
                 }
 
 
                 async #changetTotalHandledInPercent() {
                     const percentage = 100 * (await this.#getTotalToHandle() / await this.#getTotalHandled());
-                    const inPercentElement = await this.shadowRoot.querySelector('#total-handled-in-percent');
+                    /*const inPercentElement = await this.shadowRoot.querySelector('#totalHandledInPercent');
                     console.log(inPercentElement);
-                    inPercentElement.setAttribute('style', 'width:' + percentage);
+                    inPercentElement.setAttribute('style', 'width:' + percentage);*/
                 }
 
 

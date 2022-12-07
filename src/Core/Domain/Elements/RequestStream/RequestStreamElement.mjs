@@ -129,8 +129,11 @@ export default class RequestStreamElement {
 
                             let streamMessage = RequestStreamMessageTemplate.content.cloneNode(true);
                             console.log(value);
-                            streamMessage.append("");
-                            streamMessagesContainer.appendChild(streamMessage);
+                            const message = JSON.parse(value);
+                            streamMessage.querySelector('.title').innerText = 'Benutzer:in wurde aktualisiert';
+                            streamMessage.querySelector('.attributeName').innerText = 'login';
+                            streamMessage.querySelector('.attributeValue').innerText = message.attributes.login; //todo
+                            streamMessagesContainer.insertBefore(streamMessage, streamMessagesContainer.firstChild);
                         }
                     });
 
