@@ -115,6 +115,7 @@ export default class MapElement {
           latitude: (oldValue, newValue) => this.#onLatitudeChanged(oldValue, newValue),
           longitude: (oldValue, newValue) => this.#onLongitudeChanged(oldValue, newValue),
           zoom: (oldValue, newValue) => this.#onZoomChanged(oldValue, newValue),
+          triggerLocate: (oldValue, newValue) => this.#onTriggerLocateChanged(oldValue, newValue),
           mapMarkersAttributeList: (oldValue, newValue) => this.#onMapMarkersAttributeListChanged(
             JSON.parse(oldValue),
             JSON.parse(newValue)
@@ -157,6 +158,17 @@ export default class MapElement {
 
         async #applyZoomChanged(oldValue, newValue) {
           await this.#changeZoom()
+        }
+
+        async #onTriggerLocateChanged(oldValue, newValue) {
+          if(newValue === "true") {
+            await this.#applyTriggerLocateChangedToTrue()
+          }
+        }
+
+        async #applyTriggerLocateChangedToTrue() {
+          await this.#changeMapPositionToCurrentLocation()
+          this.setAttribute(elementOutbounds.camelToDash(MapAttributes.keys.triggerLocate), "false");
         }
 
         async #onMapMarkersAttributeListChanged(oldValue, newValue) {
@@ -269,6 +281,10 @@ export default class MapElement {
          */
         async #applyMarkerRemoved({ id }) {
           delete this.#mapMarkers[id];
+        }
+
+        async #changeMapPositionToCurrentLocation() {
+          this.#map.locate({setView: true, maxZoom: await this.#getZoom()})
         }
 
         async #changeMapPosition() {

@@ -6,6 +6,7 @@ export default class ButtonElement {
 
   tag = 'flux-eco-layout-button';
 
+
   /**
    * @private
    */
@@ -18,23 +19,27 @@ export default class ButtonElement {
   }
 
   /**
+   * @param elementOutbounds
    * @param {ButtonAttributes} attributes
    * @return {Promise<HTMLElement>}
    */
   async createElement(elementOutbounds, attributes) {
 
+
+
     const element = document.createElement(this.tag);
     element.id = attributes.id
     element.slot = "content-item";
 
-    for (let attribute in attributes) {
-      attribute = await elementOutbounds.camelToDash(attribute)
-      if (attribute === 'taskAttributes') {
-        const asJson = JSON.stringify(attributes[attribute]);
-        element.setAttribute(attribute, asJson);
+    for (let key in attributes) {
+      const attributeName = await elementOutbounds.camelToDash(key)
+      const attributeValue = attributes[key];
+      if (attributeName === 'task-attributes') {
+        const asJson = JSON.stringify(attributeValue);
+        element.setAttribute(attributeName, asJson);
         continue;
       }
-      element.setAttribute(attribute, attributes[attribute]);
+      element.setAttribute(attributeName, attributeValue);
     }
     return element;
   }
@@ -49,29 +54,11 @@ export default class ButtonElement {
     customElements.define(
       this.tag,
       class extends HTMLElement {
+        #connected = false;
+
         constructor() {
           super();
           this.attachShadow({ mode: 'open' })
-        }
-
-        async #getType() {
-          return this.getAttribute(ButtonAttributes.keys.type);
-        }
-
-        async #getTaskAddress() {
-          return this.getAttribute(ButtonAttributes.keys.taskAddress);
-        }
-
-        async #getTaskAttributes() {
-          return this.getAttribute(ButtonAttributes.keys.taskAttributes);
-        }
-
-        async #getAttributes() {
-          const attributes = [];
-          for (let attribute in ButtonAttributes.keys) {
-            attributes[attribute] = this.getAttribute(attribute);
-          }
-          return ButtonAttributes.new(attributes)
         }
 
         async connectedCallback() {
@@ -82,13 +69,80 @@ export default class ButtonElement {
           button.addEventListener('click', e => this.onClick());
           await this.shadowRoot.append(button)
 
+          this.#applyTitleChanged()
+
           const address = this.id.replace(/-/g, '/') + "/" + "buttonCreated";
-          elementOutbounds.publish(address, this.#getAttributes())
+          elementOutbounds.publish(address, await this.#getAttributes())
+
+          this.#connected = true;
         }
+
+        static #getAttributeNames() {
+          const attributeNames = [];
+          for (let key in ButtonAttributes.keys) {
+            attributeNames.push(elementOutbounds.camelToDash(key));
+          }
+          return attributeNames
+        }
+
+        async #getAttributes() {
+          const attributes = [];
+          for (let key in ButtonAttributes.keys) {
+            attributes[key] = this.getAttribute(await elementOutbounds.camelToDash(key));
+          }
+          return ButtonAttributes.new(attributes)
+        }
+
+        async #getType() {
+          return this.getAttribute(await elementOutbounds.camelToDash(ButtonAttributes.keys.type));
+        }
+
+        async #getTitle() {
+          return this.getAttribute(await elementOutbounds.camelToDash(MapAttributes.keys.title));
+        }
+
+        async #getTaskAddress() {
+          return this.getAttribute(await elementOutbounds.camelToDash(ButtonAttributes.keys.taskAddress));
+        }
+
+        async #getTaskAttributes() {
+          return this.getAttribute(await elementOutbounds.camelToDash(ButtonAttributes.keys.taskAttributes));
+        }
+
+        static get observedAttributes() {
+          return this.#getAttributeNames()
+        }
+
+        #onChanged = {
+          title: (oldValue, newValue) => this.#onTitleChanged(oldValue, newValue),
+        };
+
+        attributeChangedCallback(name, oldValue, newValue) {
+          const attributeKey = elementOutbounds.dashToCamel(name);
+          if (this.#onChanged.hasOwnProperty(attributeKey) &&  this.#connected  === true) {
+            this.#onChanged[attributeKey](oldValue, newValue)
+          }
+        }
+
+        async #onTitleChanged(oldValue, newValue) {
+          const textContent = this.shadowRoot.querySelector('button').textContent;
+          if(textContent !== newValue) {
+              this.#applyTitleChanged(newValue)
+          }
+        }
+
+        async #applyTitleChanged() {
+          this.shadowRoot.querySelector('button').textContent = await this.#getTitle();
+        }
+
+
+
+
+
 
         async onClick() {
           console.log(this.#getTaskAttributes())
-          elementOutbounds.publish(await this.#getTaskAddress(), await this.#getTaskAttributes())
+          elementOutbounds.publish(await this.#getTaskAddress(), JSON.parse(await this.#getTaskAttributes()))
         }
       });
 
